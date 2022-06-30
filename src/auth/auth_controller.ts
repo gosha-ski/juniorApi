@@ -23,8 +23,7 @@ export class AuthController{
 		    let [rows]:any[] = await db.query(`SELECT * FROM users WHERE email = '${body.email}'`)
 		    if(rows[0]){
 		    	let user = rows[0]
-		    	//console.log(user)
-		    	//console.log(hash(body.password))
+		 
 		    	if(user.password == hash(body.password)){
 		    		let token = jwt.sign({id: user.id}, "jwt_key", {expiresIn: 3600})
 		    		response.cookie("AccessToken", token)
@@ -48,9 +47,9 @@ export class AuthController{
 			if(rows[0]){
 				response.send("user with same email already registed")
 			}else{
-				//console.log(hash(body.password))
-				await db.query(`INSERT INTO users (id, name, surname, email, password) 
-					VALUES ('${uniqid()}', '${body.name}', '${body.surname}', '${body.email}', '${hash(body.password)}')`)
+				
+				await db.query(`INSERT INTO users (id, name, email, password) 
+					VALUES ('${uniqid()}', '${body.name}', '${body.email}', '${hash(body.password)}')`)
 
 				response.send("success sign up")
 			}

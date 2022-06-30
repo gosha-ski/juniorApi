@@ -2,13 +2,13 @@ import * as jwt from "jsonwebtoken"
 import {db} from "../mysql/connection"
 import {Response, NextFunction} from "express"
 import {RequestWithUser} from "../interfaces/requestWithUser"
+import {UserInterface} from "../users/user_interface"
 
-export async function middlewareAuth(request:any , response:any, next: any){
+export async function middlewareAuth(request:any, response:Response, next: NextFunction){
 	try{
 		let cookies = request.cookies
-		//console.log(cookies.AccessToken)
 		let data:any = jwt.verify(cookies.AccessToken, "jwt_key")
-	    let [rows]:any[] = await db.query(`SELECT * FROM users WHERE id = '${data.id}'`)
+	    let [rows]:any[] =(await db.query(`SELECT * FROM users WHERE id = '${data.id}'`))
 	    if(rows[0]){
 	    	let user = rows[0]
 	    	request.user = {

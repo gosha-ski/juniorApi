@@ -8,6 +8,8 @@
     "app": "ts-node ./src/app.ts",
     "user": "ts-node ./src/users/user_controller.ts",
     "jwt": "ts-node ./src/middleware/middlewareAuth.ts",
+    "jwtId": "ts-node ./src/interfaces/jwtId.ts",
+
     "auth": "ts-node ./src/auth/auth_controller.ts",
     "mysql": "ts-node ./src/mysql/connection.ts",
     "reqUser":"ts-node ./src/interfaces/requestWithUser.ts",
