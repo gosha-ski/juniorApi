@@ -9,6 +9,7 @@ export async function middlewareAuth(request:any, response:Response, next: NextF
 		let cookies = request.cookies
 		let data:any = jwt.verify(cookies.AccessToken, "jwt_key")
 	    let [rows]:any[] =(await db.query(`SELECT * FROM users WHERE id = '${data.id}'`))
+
 	    if(rows[0]){
 	    	let user = rows[0]
 	    	request.user = {

@@ -9,6 +9,7 @@
     "user": "ts-node ./src/users/user_controller.ts",
     "jwt": "ts-node ./src/middleware/middlewareAuth.ts",
     "jwtId": "ts-node ./src/interfaces/jwtId.ts",
+    "regMiddleware":"ts-node ./src/middleware/registerMiddleware",
 
     "auth": "ts-node ./src/auth/auth_controller.ts",
     "mysql": "ts-node ./src/mysql/connection.ts",

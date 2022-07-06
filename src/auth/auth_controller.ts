@@ -3,17 +3,19 @@ import * as jwt from "jsonwebtoken"
 import {db} from "../mysql/connection"
 import * as hash from "object-hash"
 import * as uniqid from "uniqid"
+import * as fs from "fs"
+import {registerMiddleware} from "../middleware/registerMiddleware"
 
 export class AuthController{
 	router = Router()
-	path = "/auth"
+	path = "/user"
 	constructor(){
 		this.intRoutes()
 	}
 
 	private intRoutes(){
 		this.router.post(`${this.path}/login`, this.login)
-		this.router.post(`${this.path}/register`, this.register)
+		this.router.post(`${this.path}/register`, registerMiddleware, this.register)
 
 	}
 
@@ -45,12 +47,17 @@ export class AuthController{
 			let body = request.body
 			let [rows]:any[] = await db.query(`SELECT * from users WHERE email='${body.email}'`)
 			if(rows[0]){
+				//console.log(rows[0], body.email)
 				response.send("user with same email already registed")
 			}else{
-				
-				await db.query(`INSERT INTO users (id, name, email, password) 
-					VALUES ('${uniqid()}', '${body.name}', '${body.email}', '${hash(body.password)}')`)
+				let date = new Date().toJSON().slice(0,19).replace("T", " ")
+				let id = uniqid()
+				await db.query(`INSERT INTO users (id, name, email, password, date) 
+					VALUES ('${id}', '${body.name}', '${body.email}', '${hash(body.password)}', '${date}')`)
 
+				fs.mkdir(process.cwd()+`/images/${id}`, (err)=>{
+					if(err){throw err}
+				})
 				response.send("success sign up")
 			}
 
